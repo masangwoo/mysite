@@ -5,84 +5,30 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
-import com.poscoict.mysite.vo.EmaillistVo;
+import com.poscoict.mysite.vo.UserVo;
 
-public class EmaillistDao {
-	public List<EmaillistVo> findAll() {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		List<EmaillistVo> result = new ArrayList<EmaillistVo>();
-
-		try {
-
-			conn = getconnConnection();
-
-			// 3. SQL 준비
-			String sql = "select no, first_name, last_name, email from emaillist order by no desc";
-			pstmt = conn.prepareStatement(sql);
-
-			// 4. 바인딩
-
-			// 5. SQL 실행
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				long no = rs.getLong(1);
-				String firstName = rs.getString(2);
-				String lastName = rs.getString(3);
-				String email = rs.getString(4);
-
-				EmaillistVo vo = new EmaillistVo();
-				vo.setNo(no);
-				vo.setFirstName(firstName);
-				vo.setLastName(lastName);
-				vo.setEmail(email);
-
-				result.add(vo);
-			}
-
-		} catch (SQLException e) {
-			System.out.print("error : " + e.getMessage());
-		} finally {
-			// 자원정리
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		return result;
-	}
-
-	public boolean insert(EmaillistVo vo) {
+public class UserDao {
+	
+		
+	public boolean insert(UserVo vo) {
 		boolean result = false;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
 		try {
-			conn = getconnConnection();
+			conn = getConnection();
 			
 			// 3. SQL 준비
-			String sql = "insert into emaillist values(null, ?,?,?)";
+			String sql = "insert into user values(null, ?,?,?,?, now())";
 			pstmt = conn.prepareStatement(sql);
 
 			// 4. 바인딩
-			pstmt.setString(1, vo.getFirstName());
-			pstmt.setString(2, vo.getLastName());
-			pstmt.setString(3, vo.getEmail());
+			pstmt.setString(1, vo.getName());
+			pstmt.setString(2, vo.getEmail());
+			pstmt.setString(3, vo.getPassword());
+			pstmt.setString(4, vo.getGender());
 			// 5. SQL 실행
 
 			result = pstmt.executeUpdate() == 1;
@@ -108,7 +54,56 @@ public class EmaillistDao {
 		return result;
 	}
 
-	private Connection getconnConnection() throws SQLException{
+	public UserVo findByEmailAndPassword(String email, String password) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		UserVo result = null;
+		try {
+			conn = getConnection();
+			
+			// 3. SQL 준비
+			String sql = "select no, name from user where email=? and password=?";
+			pstmt = conn.prepareStatement(sql);
+
+			// 4. 바인딩
+			pstmt.setString(1, email);
+			pstmt.setString(2, password);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				Long no = rs.getLong(1);
+				String name = rs.getString(2);
+				
+				result = new UserVo();
+				result.setNo(no);
+				result.setName(name);
+				
+			}
+	
+			// 5. SQL 실행
+		} catch (SQLException e) {
+			System.out.print("error : " + e.getMessage());
+		} finally {
+			// 자원정리
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
+	
+	private Connection getConnection() throws SQLException{
 		Connection conn =null;
 		try {
 			// 1. JDBC드라이버 로딩
