@@ -1,19 +1,11 @@
-<%@page import="com.poscoict.mysite.vo.MysiteVo"%>
-<%@page import="java.util.List"%>
-<%@page import="com.poscoict.mysite.dao.MysiteDao"%>
-
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 	
-	<%pageContext.setAttribute("newline","\n"); %>
+	<% pageContext.setAttribute("newline","\n"); %>
 <!DOCTYPE html>
-<%
-    MysiteDao dao = new MysiteDao();
-	List<MysiteVo> list = dao.findAll();
-%>
 <html>
 <head>
 <title>mysite</title>
@@ -36,8 +28,9 @@
 							<td><input type="password" name="password"></td>
 						</tr>
 						<tr>
-							<td colspan=4>${fn:replace(vo.message, newline , "<br/>") }</td>
-
+							<td colspan=4><textarea name="message" id="content"></textarea>
+							</td>
+							
 						</tr>
 						<tr>
 							<td colspan=4 align=right><input type="submit" VALUE=" 확인 "></td>
@@ -46,27 +39,29 @@
 				</form>
 				<ul>
 					<li>
-						<%
+						<%--
 	int count = list.size();
 	for(MysiteVo vo:list){
-		String msg = vo.getMessage().replace("\n", "<br>");    
-	%>
+		String msg = vo.getMessage().replace("\n", "<br>");  
+		-- 
+	--%>
+	<c:set var="count" value="${fn:length(list)}"/>  
+	<c:forEach var="item" items="${list}" varStatus="status">
 	<table width=510 border=1>
 		<tr>
-			<td>[ <%=count-- %> ]</td>
-			<td><%=vo.getName() %></td>
-			<td><%=vo.getReg_date() %></td>
-			<td><a href="${pageContext.request.contextPath}/guestbook?a=deleteform&no=<%=vo.getNo()%>">삭제</a></td>
+			<td>${count-status.index}</td>
+			<td width=100>${item.name}</td>
+			<td>${item.reg_date}</td>
+			<td><a href="${pageContext.request.contextPath}/guestbook?a=deleteform&no=${item.no}">삭제</a></td>
 		</tr>
 		<tr>
 			<td colspan=4>
-			<%= msg %>
+			${fn:replace(item.message, newline, "<br/>") }
 		</td>
 		</tr>
 	</table>
-	<%
-		}
-	%>
+	</c:forEach>
+	
 						<br>
 					</li>
 				</ul>

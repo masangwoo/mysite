@@ -19,7 +19,7 @@ public class InsertAction implements Action {
         String name = request.getParameter("name");
         String password = request.getParameter("password");
         String message = request.getParameter("message");
-                   	System.out.println(name);
+
         MysiteVo vo = new MysiteVo();
         vo.setName(name);
         vo.setPassword(password);

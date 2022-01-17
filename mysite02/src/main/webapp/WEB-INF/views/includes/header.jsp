@@ -4,9 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@page import="com.poscoict.mysite.vo.UserVo"%>
-<%
-UserVo authUser = (UserVo) session.getAttribute("authUser");
-%>
+
 <div id="header">
 	<h1>MySite</h1>
 	<ul>

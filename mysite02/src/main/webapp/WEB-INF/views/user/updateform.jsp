@@ -5,9 +5,6 @@
 <%@page import = "com.poscoict.mysite.vo.UserVo" %>
 
 <!DOCTYPE html>
-	<%
-	UserVo authUser = (UserVo)session.getAttribute("authUser");
-	%>
 <html>
 <head>
 <title>mysite</title>
@@ -20,21 +17,31 @@
 		<div id="content">
 			<div id="user">
 
-				<form id="join-form" name="joinForm" method="post" action="${pageContext.request.contextPath}/user?a=update">
+				<form id="join-form" name="joinForm" method="post" action="${pageContext.request.contextPath}/user">
 				<input type='hidden' name='a' value='update'/>
+				
 					<label class="block-label" for="name">이름</label>
-					<input id="name" name="name" type="text" value="이름">
+					<input id="name" name="name" type="text" value="${authUser.name}">
 
 					<label class="block-label" for="email">이메일</label>
-					<h3>masw23@naver.com</h3>
+					<h3>${authUser.email}</h3>
 					
 					<label class="block-label">패스워드</label>
 					<input name="password" type="password" value="">
 					
 					<fieldset>
 						<legend>성별</legend>
-						<label>여</label> <input type="radio" name="gender" value="female" checked="checked">
-						<label>남</label> <input type="radio" name="gender" value="male">
+						<c:choose>
+							<c:when test="${authUser.gender=='male'}">
+								<label>여</label> <input type="radio" name="gender" value="female" >
+								<label>남</label> <input type="radio" name="gender" value="male" checked="checked">
+							</c:when>
+						<c:otherwise>
+							<label>여</label> <input type="radio" name="gender" value="female" checked="checked">
+							<label>남</label> <input type="radio" name="gender" value="male">
+						</c:otherwise>
+						
+						</c:choose>
 					</fieldset>
 					
 	
