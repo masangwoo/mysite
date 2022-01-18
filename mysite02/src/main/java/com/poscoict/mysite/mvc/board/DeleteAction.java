@@ -27,7 +27,7 @@ public class DeleteAction implements Action {
 		
         //new MysiteDao().delete(vo);
         System.out.println( new MysiteDao().delete(vo));
-		MvcUtil.redirect(request.getContextPath()+"/guestbook", request, response);
+		MvcUtil.redirect(request.getContextPath()+"/board", request, response);
 
 	}
 

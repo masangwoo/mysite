@@ -37,8 +37,18 @@
 							<td width=100>${item.userName}</td>
 							<td width=100>${item.hit}</td>
 							<td>${item.regDate}</td>
-							<td><a
-								href="${pageContext.request.contextPath}/board?a=delete&no=${item.no}">삭제</a></td>
+							<td>
+							<c:choose>
+			<c:when test="${authUser.no==item.userNo}">
+				<a href="${pageContext.request.contextPath}/board?a=delete&no=${item.no}">
+				<img src= "${pageContext.request.contextPath}/assets/images/recycle.png">
+				</a>
+			</c:when>
+			<c:otherwise>
+				
+			</c:otherwise>
+		</c:choose>
+							</td>
 						</tr>
 						</c:forEach>
 				</table>
