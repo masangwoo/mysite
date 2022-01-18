@@ -18,6 +18,8 @@
 					<input type="text" id="kwd" name="kwd" value="">
 					<input type="submit" value="찾기">
 				</form>
+
+
 				<table class="tbl-ex">
 					<tr>
 						<th>번호</th>
@@ -26,36 +28,23 @@
 						<th>조회수</th>
 						<th>작성일</th>
 						<th>&nbsp;</th>
-					</tr>				
-					<tr>
-						<td>3</td>
-						<td><a href="">세 번째 글입니다.</a></td>
-						<td>안대혁</td>
-						<td>3</td>
-						<td>2015-10-11 12:04:20</td>
-						<td><a href="" class="del" sytle = 'background-image:url("/mysite02/assets/images/recycle.png")'>삭제</a></td>
 					</tr>
-					<tr>
-						<td>2</td>
-						<!-- style="padding-left:${(vo.depth-1)*20}px" -->
-						<td style="padding-left:${(vo.depth-1)*20}px">
-						<img src="${pageContext.servletContext.contextPath}/assets/images/recycle.png }"/>
-						<a href="">두 번째 글입니다.</a></td>
-						<td>안대혁</td>
-						<td>3</td>
-						<td>2015-10-02 12:04:12</td>
-						<td><a href="" class="del">삭제</a></td>
-					</tr>
-					<tr>
-						<td>1</td>
-						<td><a href="">첫 번째 글입니다.</a></td>
-						<td>안대혁</td>
-						<td>3</td>
-						<td>2015-09-25 07:24:32</td>
-						<td><a href="" class="del">삭제</a></td>
-					</tr>
+					<c:set var="count" value="${fn:length(list)}" />
+					<c:forEach var="item" items="${list}" varStatus="status">
+						<tr>
+							<td>${count-status.index}</td>
+							<td width=100>${item.title}</td>
+							<td width=100>${item.userName}</td>
+							<td width=100>${item.hit}</td>
+							<td>${item.regDate}</td>
+							<td><a
+								href="${pageContext.request.contextPath}/board?a=delete&no=${item.no}">삭제</a></td>
+						</tr>
+						</c:forEach>
 				</table>
 				
+
+
 				<!-- pager 추가 -->
 				<div class="pager">
 					<ul>
