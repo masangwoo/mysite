@@ -26,7 +26,7 @@ public class BoardDao {
 		conn = getConnection();
 
 		// 3. SQL 준비
-		String sql = "select b.no, b.title, a.name, b.hitcnt, date_format(b.reg_date, '%Y/%m/%d %H:%i:%s') as reg_date, b.contents, b.g_no, b.o_no, b.depth from  user a, board b where a.no=b.user_no order by b.g_no desc, b.o_no";
+		String sql = "select b.no, b.title, a.name, b.hitcnt, date_format(b.reg_date, '%Y/%m/%d %H:%i:%s') as reg_date, b.g_no, b.o_no, b.depth,a.no , b.contents from  user a, board b where a.no=b.user_no order by b.g_no desc, b.o_no";
 		pstmt = conn.prepareStatement(sql);
 
 		// 4. 바인딩
@@ -40,6 +40,11 @@ public class BoardDao {
 			String name = rs.getString(3);
 			int cnt = rs.getInt(4);
 			String regDate = rs.getString(5);
+			int groupNo = rs.getInt(6);
+			int orderNo = rs.getInt(7);
+			int depth = rs.getInt(8);
+			int userNo = rs.getInt(9);
+			
 
 			BoardVo vo = new BoardVo();
 			vo.setNo((long) no);
@@ -47,6 +52,10 @@ public class BoardDao {
 			vo.setUserName(name);
 			vo.setHit(cnt);
 			vo.setRegDate(regDate);
+			vo.setGroupNo(groupNo);
+			vo.setOrderNo(orderNo);
+			vo.setDepth(depth);
+			vo.setUserNo((long)userNo);
 			
 			result.add(vo);
 		}
@@ -72,7 +81,7 @@ public class BoardDao {
 	return result;
 	}
 		
-	public boolean insert(UserVo vo) {
+	public boolean insert(BoardVo vo) {
 		boolean result = false;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -82,14 +91,14 @@ public class BoardDao {
 			conn = getConnection();
 			
 			// 3. SQL 준비
-			String sql = "insert into user values(null, ?,?,?,?, now())";
+			String sql = " insert into board values(null, ?, ?, 0, (select max(g_no)+1 from board b), 1, 1, now(), ?)";
 			pstmt = conn.prepareStatement(sql);
 
 			// 4. 바인딩
-			pstmt.setString(1, vo.getName());
-			pstmt.setString(2, vo.getEmail());
-			pstmt.setString(3, vo.getPassword());
-			pstmt.setString(4, vo.getGender());
+			pstmt.setString(1, vo.getTitle());
+			pstmt.setString(2, vo.getContents());
+			pstmt.setLong(3, vo.getUserNo());
+
 			// 5. SQL 실행
 
 			result = pstmt.executeUpdate() == 1;
@@ -289,6 +298,8 @@ public class BoardDao {
 		}
 		return conn;
 		}
+
+	
 
 
 

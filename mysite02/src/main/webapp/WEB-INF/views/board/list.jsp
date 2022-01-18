@@ -7,7 +7,7 @@
 <head>
 <title>mysite</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<link href="${pageContext.servletContext.contextPath }/assets/css/board.css" rel="stylesheet" type="text/css">
+<link href="${pageContext.servletContext.contextPath}/assets/css/board.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 	<div id="container">
@@ -60,7 +60,16 @@
 				<!-- pager 추가 -->
 				
 				<div class="bottom">
-					<a href="" id="new-book">글쓰기</a>
+			<c:choose>
+			<c:when test="${empty authUser}">
+				<a href="${pageContext.request.contextPath}/user?a=loginform" id="new-book">글쓰기</a>
+			</c:when>
+			<c:otherwise>
+				<a href="${pageContext.request.contextPath}/board?a=writeform" id="new-book">글쓰기</a>
+			</c:otherwise>
+		</c:choose>
+				
+					
 				</div>				
 			</div>
 		</div>
