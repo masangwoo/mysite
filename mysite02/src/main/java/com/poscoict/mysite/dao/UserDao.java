@@ -114,7 +114,7 @@ public class UserDao {
 			conn = getConnection();
 			
 			// 3. SQL 준비
-			String sql = "select name, gender from user where no=?";
+			String sql = "select name, gender, email from user where no=?";
 			pstmt = conn.prepareStatement(sql);
 
 			// 4. 바인딩
@@ -125,11 +125,15 @@ public class UserDao {
 				
 				String name = rs.getString(1);
 				String gender = rs.getString(2);
+				String email = rs.getString(3);
+
 
 				
 				result = new UserVo();
 				result.setName(name);
 				result.setGender(gender);
+				result.setEmail(email);
+
 
 				
 			}
