@@ -7,15 +7,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.catalina.Session;
-
 import com.poscoict.mysite.vo.BoardVo;
-import com.poscoict.mysite.vo.MysiteVo;
-import com.poscoict.mysite.vo.UserVo;
 
 public class BoardDao {
-	public List<BoardVo> findAll() {
+	public List<BoardVo> findAll(int i) {
 	Connection conn = null;
 	PreparedStatement pstmt = null;
 	ResultSet rs = null;
@@ -26,11 +21,11 @@ public class BoardDao {
 		conn = getConnection();
 
 		// 3. SQL 준비
-		String sql = "select b.no, b.title, a.name, b.hitcnt, date_format(b.reg_date, '%Y/%m/%d %H:%i:%s') as reg_date, b.g_no, b.o_no, b.depth,a.no , b.contents from  user a, board b where a.no=b.user_no order by b.g_no desc, b.o_no";
+		String sql = "select b.no, b.title, a.name, b.hitcnt, date_format(b.reg_date, '%Y/%m/%d %H:%i:%s') as reg_date, b.g_no, b.o_no, b.depth,a.no , b.contents from  user a, board b where a.no=b.user_no order by b.g_no desc, b.o_no limit ?, 5";
 		pstmt = conn.prepareStatement(sql);
 
 		// 4. 바인딩
-
+		pstmt.setInt(1, i);
 		// 5. SQL 실행
 		rs = pstmt.executeQuery();
 
@@ -79,6 +74,113 @@ public class BoardDao {
 		}
 	}
 	return result;
+	}
+	
+	public List<BoardVo> findAll() {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<BoardVo> result = new ArrayList<BoardVo>();
+
+		try {
+
+			conn = getConnection();
+
+			// 3. SQL 준비
+			String sql = "select b.no, b.title, a.name, b.hitcnt, date_format(b.reg_date, '%Y/%m/%d %H:%i:%s') as reg_date, b.g_no, b.o_no, b.depth,a.no , b.contents from  user a, board b where a.no=b.user_no order by b.g_no desc, b.o_no";
+			pstmt = conn.prepareStatement(sql);
+
+			// 4. 바인딩
+
+			// 5. SQL 실행
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				int no = rs.getInt(1);
+				String title = rs.getString(2);
+				String name = rs.getString(3);
+				int cnt = rs.getInt(4);
+				String regDate = rs.getString(5);
+				int groupNo = rs.getInt(6);
+				int orderNo = rs.getInt(7);
+				int depth = rs.getInt(8);
+				int userNo = rs.getInt(9);
+				
+
+				BoardVo vo = new BoardVo();
+				vo.setNo((long) no);
+				vo.setTitle(title);
+				vo.setUserName(name);
+				vo.setHit(cnt);
+				vo.setRegDate(regDate);
+				vo.setGroupNo(groupNo);
+				vo.setOrderNo(orderNo);
+				vo.setDepth(depth);
+				vo.setUserNo((long)userNo);
+				
+				result.add(vo);
+			}
+
+		} catch (SQLException e) {
+			System.out.print("error : " + e.getMessage());
+		} finally {
+			// 자원정리
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
+		}
+	
+	public int getTotal() {
+		int result = 0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String sql = "select count(*) as total from board";
+		
+		try {
+			conn = getConnection();
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = rs.getInt("total");
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
+		return result;
 	}
 		
 	public boolean insert(String title, String contents, long no ) {
@@ -415,37 +517,27 @@ public class BoardDao {
 		}
 		return result;
 	}
-	
-	
 
-	public UserVo findByEmailAndPassword(String email, String password) {
+	public boolean hitUp(int no) {
+		boolean result = false;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		UserVo result = null;
+
 		try {
 			conn = getConnection();
 			
 			// 3. SQL 준비
-			String sql = "select no, name from user where email=? and password=?";
+			String sql = "update board set hitcnt where no = ?";
 			pstmt = conn.prepareStatement(sql);
 
 			// 4. 바인딩
-			pstmt.setString(1, email);
-			pstmt.setString(2, password);
+			pstmt.setInt(1, no);
 			
-			rs = pstmt.executeQuery();
-			if(rs.next()) {
-				Long no = rs.getLong(1);
-				String name = rs.getString(2);
-				
-				result = new UserVo();
-				result.setNo(no);
-				result.setName(name);
-				
-			}
-	
 			// 5. SQL 실행
+
+			result = pstmt.executeUpdate() == 1;
+			
 		} catch (SQLException e) {
 			System.out.print("error : " + e.getMessage());
 		} finally {
@@ -465,9 +557,8 @@ public class BoardDao {
 			}
 		}
 		return result;
+		
 	}
-	
-
 	
 	private Connection getConnection() throws SQLException{
 		Connection conn =null;
@@ -483,12 +574,48 @@ public class BoardDao {
 		return conn;
 		}
 
+	public int count() {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int no=0;
 
+		try {
+			conn = getConnection();
 
+			// 3. SQL 준비
+			String sql = "select count(*) from board";
+			pstmt = conn.prepareStatement(sql);
 
+			// 4. 바인딩
 
-	
+			// 5. SQL 실행
+			rs = pstmt.executeQuery();
 
+			while (rs.next()) {
+				no = rs.getInt(1);				
+			}
+
+		} catch (SQLException e) {
+			System.out.print("error : " + e.getMessage());
+		} finally {
+			// 자원정리
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return no;
+	}
 
 
 }

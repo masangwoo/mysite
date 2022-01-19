@@ -7,7 +7,7 @@
 <head>
 <title>mysite</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<link href="${pageContext.servletContext.contextPath}/assets/css/board.css" rel="stylesheet" type="text/css">
+<link href="${pageContext.servletContext.contextPath }/assets/css/board.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 	<div id="container">
@@ -18,8 +18,6 @@
 					<input type="text" id="kwd" name="kwd" value="">
 					<input type="submit" value="찾기">
 				</form>
-
-
 				<table class="tbl-ex">
 					<tr>
 						<th>번호</th>
@@ -32,7 +30,17 @@
 					<c:set var="count" value="${fn:length(list)}" />
 					<c:forEach var="item" items="${list}" varStatus="status">
 						<tr>
-							<td >${count-status.index}</td>
+							
+							<c:choose>
+								<c:when test="${p==pcnt}"> 
+								<td> ${count-status.index}</td>
+								</c:when>
+								<c:otherwise> 
+								<td>${count-status.index+(cnt%5)+5*(pcnt-p-1)}</td>
+								</c:otherwise>
+							</c:choose>
+							
+							
 							<td style="text-align:left; padding-left:${(item.depth-1)*20 }px">
 								<c:if test='${item.depth gt 1}'>
 									<img src="${pageContext.request.contextPath}/assets/images/reply.png">							
@@ -43,47 +51,47 @@
 							<td>${item.regDate}</td>
 							<td>
 							<c:choose>
-			<c:when test="${authUser.no==item.userNo}">
-				<a href="${pageContext.request.contextPath}/board?a=delete&no=${item.no}">
-				<img src= "${pageContext.request.contextPath}/assets/images/recycle.png">
-				</a>
-			</c:when>
-			<c:otherwise>
-				
-			</c:otherwise>
-		</c:choose>
+									<c:when test="${authUser.no==item.userNo}">
+										<a href="${pageContext.request.contextPath}/board?a=delete&no=${item.no}">
+											<img
+											src="${pageContext.request.contextPath}/assets/images/recycle.png">
+										</a>
+									</c:when>
+									<c:otherwise>
+
+									</c:otherwise>
+								</c:choose>
 							</td>
 						</tr>
 						</c:forEach>
 				</table>
 				
-
-
 				<!-- pager 추가 -->
 				<div class="pager">
 					<ul>
 						<li><a href="">◀</a></li>
-						<li><a href="">1</a></li>
-						<li class="selected">2</li>
-						<li><a href="">3</a></li>
-						<li>4</li>
-						<li>5</li>
+						<c:forEach var="cnt" begin="1" end="${pcnt}" step="1">
+						<li
+							<c:if test="${p==cnt}"> class="selected" </c:if>
+						><a href="${pageContext.request.contextPath}/board?p=${cnt}">${cnt}</a></li>
+					</c:forEach>
+						
 						<li><a href="">▶</a></li>
 					</ul>
 				</div>					
 				<!-- pager 추가 -->
 				
 				<div class="bottom">
-			<c:choose>
-			<c:when test="${empty authUser}">
-				<a href="${pageContext.request.contextPath}/user?a=loginform" id="new-book">글쓰기</a>
-			</c:when>
-			<c:otherwise>
-				<a href="${pageContext.request.contextPath}/board?a=writeform" id="new-book">글쓰기</a>
-			</c:otherwise>
-		</c:choose>
-				
-					
+					<c:choose>
+						<c:when test="${empty authUser}">
+							<a href="${pageContext.request.contextPath}/user?a=loginform"
+								id="new-book">글쓰기</a>
+						</c:when>
+						<c:otherwise>
+							<a href="${pageContext.request.contextPath}/board?a=writeform"
+								id="new-book">글쓰기</a>
+						</c:otherwise>
+					</c:choose>
 				</div>				
 			</div>
 		</div>

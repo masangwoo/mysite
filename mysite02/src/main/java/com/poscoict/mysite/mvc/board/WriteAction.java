@@ -47,6 +47,7 @@ public class WriteAction implements Action {
 	                		
 	        dao.insert(title, contents, (long)userNo);
 		}
+		request.setAttribute("p", Integer.valueOf(1));
        // MvcUtil.forward("/board/write", request, response);
 		MvcUtil.redirect(request.getContextPath()+"/board", request, response);
 		
