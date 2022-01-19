@@ -81,12 +81,12 @@ public class BoardDao {
 	return result;
 	}
 		
-	public boolean insert(BoardVo vo) {
+	public boolean insert(String title, String contents, long no ) {
 		boolean result = false;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-
+		System.out.println("안됨");
 		try {
 			conn = getConnection();
 			
@@ -95,9 +95,9 @@ public class BoardDao {
 			pstmt = conn.prepareStatement(sql);
 
 			// 4. 바인딩
-			pstmt.setString(1, vo.getTitle());
-			pstmt.setString(2, vo.getContents());
-			pstmt.setLong(3, vo.getUserNo());
+			pstmt.setString(1, title);
+			pstmt.setString(2, contents);
+			pstmt.setLong(3, no);
 
 			// 5. SQL 실행
 
@@ -124,6 +124,53 @@ public class BoardDao {
 		return result;
 	}
 	
+	public boolean insert(BoardVo vo) {
+		boolean result = false;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			conn = getConnection();
+			
+			// 3. SQL 준비
+			String sql = " insert into board values(null, ?, ?, 0, ?, ? +1, ? +1, now(), ?)";
+			pstmt = conn.prepareStatement(sql);
+
+			// 4. 바인딩
+			pstmt.setString(1, vo.getTitle());
+			pstmt.setString(2, vo.getContents());
+			pstmt.setInt(3, vo.getGroupNo());
+			pstmt.setInt(4, vo.getOrderNo());
+			pstmt.setInt(5, vo.getDepth());
+			pstmt.setLong(6, vo.getUserNo());
+
+			// 5. SQL 실행
+
+			result = pstmt.executeUpdate() == 1;
+
+		} catch (SQLException e) {
+			System.out.print("error : " + e.getMessage());
+		} finally {
+			// 자원정리
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
+	
+	
 	public BoardVo view(int no) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -133,7 +180,7 @@ public class BoardDao {
 			conn = getConnection();
 			
 			// 3. SQL 준비
-			String sql = "select title, contents, user_no from board where no=?";
+			String sql = "select title, contents, hitcnt, g_no, o_no, user_no, depth from board where no=?";
 			pstmt = conn.prepareStatement(sql);
 
 			// 4. 바인딩
@@ -143,12 +190,21 @@ public class BoardDao {
 			if(rs.next()) {
 				String title = rs.getString(1);
 				String contents = rs.getString(2);
-				int userNo = rs.getInt(3);
+				int hitcnt = rs.getInt(3);
+				int groupNo = rs.getInt(4);
+				int orderno = rs.getInt(5);
+				int userNo = rs.getInt(6);
+				int depth = rs.getInt(7);
+
 				result = new BoardVo();
 				result.setTitle(title);
 				result.setContents(contents);
+				result.setHit(hitcnt);
+				result.setGroupNo(groupNo);
+				result.setOrderNo(orderno);
 				result.setUserNo((long)userNo);
 				result.setNo((long)no);
+				result.setDepth(depth);
 	
 			}
 	
@@ -273,7 +329,92 @@ public class BoardDao {
 		return result;
 	}
 	
+	public boolean update(int orderNo, int groupNo) {
+		boolean result = false;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 
+		try {
+			conn = getConnection();
+			
+			// 3. SQL 준비
+			
+			String sql = "update board set o_no=o_no+1 where o_no>=? and g_no = ?";
+			pstmt = conn.prepareStatement(sql);
+
+			// 4. 바인딩
+			pstmt.setInt(1, orderNo);
+			pstmt.setInt(2, groupNo);
+			// 5. SQL 실행
+
+			result = pstmt.executeUpdate() == 1;
+			
+		} catch (SQLException e) {
+			System.out.print("error : " + e.getMessage());
+		} finally {
+			// 자원정리
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
+	
+	public boolean delete(int no) {
+		
+		
+		boolean result = false;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			conn = getConnection();
+			
+			// 3. SQL 준비
+			String sql = "delete from board where no= ?";
+			pstmt = conn.prepareStatement(sql);
+
+			// 4. 바인딩
+			pstmt.setInt(1, no);
+			
+			// 5. SQL 실행
+
+			result = pstmt.executeUpdate() == 1;
+			
+		} catch (SQLException e) {
+			System.out.print("error : " + e.getMessage());
+		} finally {
+			// 자원정리
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
+	
+	
 
 	public UserVo findByEmailAndPassword(String email, String password) {
 		Connection conn = null;
@@ -339,6 +480,8 @@ public class BoardDao {
 		}
 		return conn;
 		}
+
+
 
 
 

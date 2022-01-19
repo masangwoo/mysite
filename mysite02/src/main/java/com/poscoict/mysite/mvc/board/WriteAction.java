@@ -20,18 +20,36 @@ public class WriteAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		BoardVo vo = new BoardVo();
 		BoardDao dao = new BoardDao();
-        String title = request.getParameter("title");
-        String contents = request.getParameter("content");
-        int userNo = Integer.parseInt(request.getParameter("userNo"));
+		
+		
+		if(request.getParameter("groupNo")!=null) {
+			BoardVo vo = new BoardVo();
+	        String title = request.getParameter("title");
+	        String contents = request.getParameter("content");
+	        int userNo = Integer.parseInt(request.getParameter("userNo"));
+	        int orderNo = Integer.parseInt(request.getParameter("orderNo"));
+	        int groupNo = Integer.parseInt(request.getParameter("groupNo"));
+	        int depth = Integer.parseInt(request.getParameter("depth"));
+	        dao.update(orderNo, groupNo);
+	        
+	        vo.setTitle(title);
+	        vo.setContents(contents);
+	        vo.setUserNo((long)userNo);
+	        vo.setOrderNo(orderNo);
+	        vo.setGroupNo(groupNo);
+	        vo.setDepth(depth);
 
-        vo.setTitle(title);
-        vo.setContents(contents);
-        vo.setUserNo((long)userNo);
-                		
-        dao.insert(vo);
-        
+	                		
+	        dao.insert(vo);
+		}else {
+	        String title = request.getParameter("title");
+	        String contents = request.getParameter("content");
+	        int userNo = Integer.parseInt(request.getParameter("userNo"));
+	
+	                		
+	        dao.insert(title, contents, (long)userNo);
+		}
        // MvcUtil.forward("/board/write", request, response);
 		MvcUtil.redirect(request.getContextPath()+"/board", request, response);
 		

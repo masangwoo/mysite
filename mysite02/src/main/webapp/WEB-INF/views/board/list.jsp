@@ -32,8 +32,12 @@
 					<c:set var="count" value="${fn:length(list)}" />
 					<c:forEach var="item" items="${list}" varStatus="status">
 						<tr>
-							<td>${count-status.index}</td>
-							<td width=100><a href="${pageContext.request.contextPath}/board?a=view&no=${item.no}">${item.title}</a></td>
+							<td >${count-status.index}</td>
+							<td style="text-align:left; padding-left:${(item.depth-1)*20 }px">
+								<c:if test='${item.depth gt 1}'>
+									<img src="${pageContext.request.contextPath}/assets/images/reply.png">							
+								</c:if>
+							<a href="${pageContext.request.contextPath}/board?a=view&no=${item.no}">${item.title}</a></td>
 							<td width=100>${item.userName}</td>
 							<td width=100>${item.hit}</td>
 							<td>${item.regDate}</td>

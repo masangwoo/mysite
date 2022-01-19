@@ -19,6 +19,14 @@
 					<input type="hidden" name="a" value="write">
 					<input type="hidden" name="userNo" value="${authUser.no}">
 					
+					
+						<c:if test='${a eq "reply"}'>
+							<input type="hidden" name="groupNo" value="${vo.groupNo}">
+							<input type="hidden" name="orderNo" value="${vo.orderNo}">
+							<input type="hidden" name="depth" value="${vo.depth}">							
+						</c:if>
+					
+					
 					<table class="tbl-ex">
 						<tr>
 							<th colspan="2">글쓰기</th>
@@ -33,7 +41,7 @@
 						</tr>
 					</table>
 					<div class="bottom">
-						<a href="/board">취소</a> <input type="submit" value="등록">
+						<a href="${pageContext.request.contextPath}/board">취소</a> <input type="submit" value="등록">
 					</div>
 				</form>
 			</div>
