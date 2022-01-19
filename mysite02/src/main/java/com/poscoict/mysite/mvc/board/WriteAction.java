@@ -30,16 +30,13 @@ public class WriteAction implements Action {
 	        int userNo = Integer.parseInt(request.getParameter("userNo"));
 	        int orderNo = Integer.parseInt(request.getParameter("orderNo"));
 	        int groupNo = Integer.parseInt(request.getParameter("groupNo"));
-	        int depth = Integer.parseInt(request.getParameter("depth"));
-	        dao.update(orderNo, groupNo);
-	        
+	        int depth = Integer.parseInt(request.getParameter("depth"));	        
 	        vo.setTitle(title);
 	        vo.setContents(contents);
 	        vo.setUserNo((long)userNo);
 	        vo.setOrderNo(orderNo);
 	        vo.setGroupNo(groupNo);
 	        vo.setDepth(depth);
-
 	                		
 	        dao.insert(vo);
 		}else {

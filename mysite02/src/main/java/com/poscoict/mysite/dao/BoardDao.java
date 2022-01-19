@@ -131,8 +131,10 @@ public class BoardDao {
 		ResultSet rs = null;
 
 		try {
-			conn = getConnection();
+			update(vo.getOrderNo(), vo.getGroupNo());
 			
+			conn = getConnection();
+
 			// 3. SQL 준비
 			String sql = " insert into board values(null, ?, ?, 0, ?, ? +1, ? +1, now(), ?)";
 			pstmt = conn.prepareStatement(sql);
@@ -340,7 +342,7 @@ public class BoardDao {
 			
 			// 3. SQL 준비
 			
-			String sql = "update board set o_no=o_no+1 where o_no>=? and g_no = ?";
+			String sql = "update board set o_no=o_no+1 where o_no>? and g_no = ?";
 			pstmt = conn.prepareStatement(sql);
 
 			// 4. 바인딩
