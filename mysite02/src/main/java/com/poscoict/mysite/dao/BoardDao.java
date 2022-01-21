@@ -21,7 +21,7 @@ public class BoardDao {
 		conn = getConnection();
 
 		// 3. SQL 준비
-		String sql = "select b.no, b.title, a.name, b.hitcnt, date_format(b.reg_date, '%Y/%m/%d %H:%i:%s') as reg_date, b.g_no, b.o_no, b.depth,a.no , b.contents from  user a, board b where a.no=b.user_no order by b.g_no desc, b.o_no limit ?, 5";
+		String sql = "select b.no, b.title, a.name, b.hit, date_format(b.reg_date, '%Y/%m/%d %H:%i:%s') as reg_date, b.g_no, b.o_no, b.depth,a.no , b.contents from  user a, board b where a.no=b.user_no order by b.g_no desc, b.o_no limit ?, 5";
 		pstmt = conn.prepareStatement(sql);
 
 		// 4. 바인딩
@@ -87,7 +87,7 @@ public class BoardDao {
 			conn = getConnection();
 
 			// 3. SQL 준비
-			String sql = "select b.no, b.title, a.name, b.hitcnt, date_format(b.reg_date, '%Y/%m/%d %H:%i:%s') as reg_date, b.g_no, b.o_no, b.depth,a.no , b.contents from  user a, board b where a.no=b.user_no order by b.g_no desc, b.o_no";
+			String sql = "select b.no, b.title, a.name, b.hit, date_format(b.reg_date, '%Y/%m/%d %H:%i:%s') as reg_date, b.g_no, b.o_no, b.depth,a.no , b.contents from  user a, board b where a.no=b.user_no order by b.g_no desc, b.o_no";
 			pstmt = conn.prepareStatement(sql);
 
 			// 4. 바인딩
@@ -284,7 +284,7 @@ public class BoardDao {
 			conn = getConnection();
 			
 			// 3. SQL 준비
-			String sql = "select title, contents, hitcnt, g_no, o_no, user_no, depth from board where no=?";
+			String sql = "select title, contents, hit, g_no, o_no, user_no, depth from board where no=?";
 			pstmt = conn.prepareStatement(sql);
 
 			// 4. 바인딩
@@ -294,7 +294,7 @@ public class BoardDao {
 			if(rs.next()) {
 				String title = rs.getString(1);
 				String contents = rs.getString(2);
-				int hitcnt = rs.getInt(3);
+				int hit = rs.getInt(3);
 				int groupNo = rs.getInt(4);
 				int orderno = rs.getInt(5);
 				int userNo = rs.getInt(6);
@@ -303,7 +303,7 @@ public class BoardDao {
 				result = new BoardVo();
 				result.setTitle(title);
 				result.setContents(contents);
-				result.setHit(hitcnt);
+				result.setHit(hit);
 				result.setGroupNo(groupNo);
 				result.setOrderNo(orderno);
 				result.setUserNo((long)userNo);
@@ -528,7 +528,7 @@ public class BoardDao {
 			conn = getConnection();
 			
 			// 3. SQL 준비
-			String sql = "update board set hitcnt where no = ?";
+			String sql = "update board set hit=hit+1 where no = ?";
 			pstmt = conn.prepareStatement(sql);
 
 			// 4. 바인딩
