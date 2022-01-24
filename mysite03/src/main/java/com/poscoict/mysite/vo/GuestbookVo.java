@@ -1,6 +1,6 @@
 package com.poscoict.mysite.vo;
 
-public class MysiteVo {
+public class GuestbookVo {
 	private int no;
 	private String name;
 	private String password;

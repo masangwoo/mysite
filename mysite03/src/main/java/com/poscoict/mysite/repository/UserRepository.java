@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.apache.catalina.Session;
 import org.springframework.stereotype.Repository;
 
 import com.poscoict.mysite.vo.UserVo;
@@ -14,7 +13,51 @@ import com.poscoict.mysite.vo.UserVo;
 @Repository
 public class UserRepository {
 	
+	public boolean update(UserVo userVo) {
+		boolean result = false;
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = getConnection();
+
+			if(userVo.getPassword() == null || "".equals(userVo.getPassword())) {
+				String sql = "update user set name=?, gender=? where no=?";
+				pstmt = conn.prepareStatement(sql);
+
+				pstmt.setString(1, userVo.getName());
+				pstmt.setString(2, userVo.getGender());
+				pstmt.setLong(3, userVo.getNo());
+			} else {
+				String sql = "update user set name=?, gender=?, password=? where no=?";
+				pstmt = conn.prepareStatement(sql);
+
+				pstmt.setString(1, userVo.getName());
+				pstmt.setString(2, userVo.getGender());
+				pstmt.setString(3, userVo.getPassword());
+				pstmt.setLong(4, userVo.getNo());
+			}
+
+			int count = pstmt.executeUpdate();
+			result = count == 1;
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		} finally {
+			try {
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				if(conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}		
 		
+		return result;		
+	}
+	
 	public boolean insert(UserVo vo) {
 		boolean result = false;
 		Connection conn = null;
@@ -107,7 +150,7 @@ public class UserRepository {
 		return result;
 	}
 	
-	public UserVo findByNo(Long no) {
+	public UserVo findByNo(Long userNo) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -116,22 +159,24 @@ public class UserRepository {
 			conn = getConnection();
 			
 			// 3. SQL 준비
-			String sql = "select name, gender, email from user where no=?";
+			String sql = "select no, name, gender, email from user where no=?";
 			pstmt = conn.prepareStatement(sql);
 
 			// 4. 바인딩
-			pstmt.setLong(1, no);
+			pstmt.setLong(1, userNo);
 			
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				
-				String name = rs.getString(1);
-				String gender = rs.getString(2);
-				String email = rs.getString(3);
+				Long no = rs.getLong(1);
+				String name = rs.getString(2);
+				String gender = rs.getString(3);
+				String email = rs.getString(4);
 
 
 				
 				result = new UserVo();
+				result.setNo(no);
 				result.setName(name);
 				result.setGender(gender);
 				result.setEmail(email);
@@ -167,7 +212,6 @@ public class UserRepository {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		Session session = null;
 
 		try {
 			conn = getConnection();
@@ -232,6 +276,7 @@ public class UserRepository {
 		}
 		return conn;
 		}
+
 
 
 

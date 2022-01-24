@@ -10,15 +10,15 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.poscoict.mysite.vo.MysiteVo;
+import com.poscoict.mysite.vo.GuestbookVo;
 
 @Repository
-public class MysiteRepository {
-	public List<MysiteVo> findAll() {
+public class GuestbookRepository {
+	public List<GuestbookVo> findAll() {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		List<MysiteVo> result = new ArrayList<MysiteVo>();
+		List<GuestbookVo> result = new ArrayList<GuestbookVo>();
 
 		try {
 
@@ -39,7 +39,7 @@ public class MysiteRepository {
 				String reg_date = rs.getString(3);
 				String message = rs.getString(4);
 
-				MysiteVo vo = new MysiteVo();
+				GuestbookVo vo = new GuestbookVo();
 				vo.setNo(no);
 				vo.setName(name);
 				vo.setReg_date(reg_date);
@@ -69,7 +69,7 @@ public class MysiteRepository {
 		return result;
 	}
 
-	public boolean insert(MysiteVo vo) {
+	public boolean insert(GuestbookVo vo) {
 		boolean result = false;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -111,7 +111,7 @@ public class MysiteRepository {
 		return result;
 	}
 
-	public boolean delete(MysiteVo vo) {
+	public boolean delete(Long no, String password) {
 		boolean result = false;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -125,8 +125,8 @@ public class MysiteRepository {
 			pstmt = conn.prepareStatement(sql);
 
 			// 4. 바인딩
-			pstmt.setInt(1, vo.getNo());
-			pstmt.setString(2, vo.getPassword());
+			pstmt.setLong(1, no);
+			pstmt.setString(2, password);
 			
 			// 5. SQL 실행
 

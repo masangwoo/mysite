@@ -27,16 +27,16 @@
 						<th>작성일</th>
 						<th>&nbsp;</th>
 					</tr>
-					<c:set var="count" value="${fn:length(list)}" />
-					<c:forEach var="item" items="${list}" varStatus="status">
+					<c:set var="count" value="${fn:length(map.list)}" />
+					<c:forEach var="item" items="${map.list}" varStatus="status">
 						<tr>
 							
 							<c:choose>
-								<c:when test="${p==pcnt}"> 
+								<c:when test="${map.p==map.pcnt}"> 
 								<td> ${count-status.index}</td>
 								</c:when>
 								<c:otherwise> 
-								<td>${count-status.index+(cnt%5)+5*(pcnt-p-1)}</td>
+								<td>${count-status.index+(map.cnt%5)+5*(map.pcnt-p-1)}</td>
 								</c:otherwise>
 							</c:choose>
 							
@@ -45,14 +45,14 @@
 								<c:if test='${item.depth gt 1}'>
 									<img src="${pageContext.request.contextPath}/assets/images/reply.png">							
 								</c:if>
-							<a href="${pageContext.request.contextPath}/board?a=view&no=${item.no}">${item.title}</a></td>
+							<a href="${pageContext.request.contextPath}/board/view?no=${item.no}">${item.title}</a></td>
 							<td width=100>${item.userName}</td>
 							<td width=100>${item.hit}</td>
 							<td>${item.regDate}</td>
 							<td>
 							<c:choose>
 									<c:when test="${authUser.no==item.userNo}">
-										<a href="${pageContext.request.contextPath}/board?a=delete&no=${item.no}">
+										<a href="${pageContext.request.contextPath}/board/delete?no=${item.no}">
 											<img
 											src="${pageContext.request.contextPath}/assets/images/recycle.png">
 										</a>
@@ -70,9 +70,9 @@
 				<div class="pager">
 					<ul>
 						<li><a href="">◀</a></li>
-						<c:forEach var="cnt" begin="1" end="${pcnt}" step="1">
+						<c:forEach var="cnt" begin="1" end="${map.pcnt}" step="1">
 						<li
-							<c:if test="${p==cnt}"> class="selected" </c:if>
+							<c:if test="${map.p==cnt}"> class="selected" </c:if>
 						><a href="${pageContext.request.contextPath}/board?p=${cnt}">${cnt}</a></li>
 					</c:forEach>
 						
@@ -84,11 +84,11 @@
 				<div class="bottom">
 					<c:choose>
 						<c:when test="${empty authUser}">
-							<a href="${pageContext.request.contextPath}/user?a=loginform"
+							<a href="${pageContext.request.contextPath}/user/login"
 								id="new-book">글쓰기</a>
 						</c:when>
 						<c:otherwise>
-							<a href="${pageContext.request.contextPath}/board?a=writeform"
+							<a href="${pageContext.request.contextPath}/board/writeform"
 								id="new-book">글쓰기</a>
 						</c:otherwise>
 					</c:choose>

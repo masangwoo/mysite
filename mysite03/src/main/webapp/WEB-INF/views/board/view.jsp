@@ -41,12 +41,12 @@
 					<a href="${pageContext.servletContext.contextPath}/board">글목록</a>
 				<c:choose>
 					<c:when test="${!empty authUser.no}">
-						<a href="${pageContext.servletContext.contextPath}/board?a=replyform&no=${vo.no}">답글 달기</a>
+						<a href="${pageContext.servletContext.contextPath}/board/writeform?no=${vo.no}">답글 달기</a>
 					</c:when>
 				</c:choose>
 				<c:choose>
 					<c:when test="${authUser.no==vo.userNo}">
-						<a href="${pageContext.servletContext.contextPath}/board?a=modifyform&no=${vo.no}">글수정</a>
+						<a href="${pageContext.servletContext.contextPath}/board/updateform?no=${vo.no}">글수정</a>
 					</c:when>
 				</c:choose>
 					

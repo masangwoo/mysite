@@ -187,12 +187,11 @@ public class BoardRepository {
 		return result;
 	}
 		
-	public boolean insert(String title, String contents, long no ) {
+	public boolean insert(String title, String contents, long userNo ) {
 		boolean result = false;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		System.out.println("안됨");
 		try {
 			conn = getConnection();
 			
@@ -203,7 +202,7 @@ public class BoardRepository {
 			// 4. 바인딩
 			pstmt.setString(1, title);
 			pstmt.setString(2, contents);
-			pstmt.setLong(3, no);
+			pstmt.setLong(3, userNo);
 
 			// 5. SQL 실행
 
@@ -279,7 +278,7 @@ public class BoardRepository {
 	}
 	
 	
-	public BoardVo view(int no) {
+	public BoardVo view(long no) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -297,16 +296,16 @@ public class BoardRepository {
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				String title = rs.getString(1);
-				String contents = rs.getString(2);
+				String content = rs.getString(2);
 				int hit = rs.getInt(3);
 				int groupNo = rs.getInt(4);
 				int orderno = rs.getInt(5);
-				int userNo = rs.getInt(6);
+				long userNo = rs.getLong(6);
 				int depth = rs.getInt(7);
 
 				result = new BoardVo();
 				result.setTitle(title);
-				result.setContents(contents);
+				result.setContents(content);
 				result.setHit(hit);
 				result.setGroupNo(groupNo);
 				result.setOrderNo(orderno);
@@ -479,7 +478,7 @@ public class BoardRepository {
 		return result;
 	}
 	
-	public boolean delete(int no) {
+	public boolean delete(long no) {
 		
 		
 		boolean result = false;
@@ -495,7 +494,7 @@ public class BoardRepository {
 			pstmt = conn.prepareStatement(sql);
 
 			// 4. 바인딩
-			pstmt.setInt(1, no);
+			pstmt.setLong(1, no);
 			
 			// 5. SQL 실행
 
