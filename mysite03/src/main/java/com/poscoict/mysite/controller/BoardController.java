@@ -23,16 +23,20 @@ public class BoardController {
 	
 	@RequestMapping("")
 	   public String index(HttpSession session, 
-	         @RequestParam(value="p", defaultValue="1")Integer p, 
-	         //@RequestParam(value="kwd", required = false, defaultValue = "") String kwd, 
-	         Model model) {
-	      
-	      UserVo authUser = (UserVo)session.getAttribute("authUser");
-	      
-	      Map<String, Object> map = boardService.getContentsList(p/*, kwd*/);
-	      model.addAttribute("map", map);   
-	      model.addAttribute("authUser", authUser);   
-	      return "board/list";
+				@RequestParam(value = "p", defaultValue = "1") Integer p,
+				@RequestParam(value = "kwd", required = false, defaultValue = "") String kwd, Model model) {
+			Map<String, Object> map = null;
+			UserVo authUser = (UserVo) session.getAttribute("authUser");
+			if (kwd.equals(null)) {
+				map = boardService.getContentsList(p);
+
+			} else {
+				map = boardService.getContentsList(p, kwd);
+			}
+				model.addAttribute("map", map);
+				model.addAttribute("authUser", authUser);
+			
+			return "board/list";
 	   }
 	
 	@RequestMapping("/writeform")

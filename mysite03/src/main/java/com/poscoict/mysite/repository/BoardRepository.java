@@ -80,6 +80,74 @@ public class BoardRepository {
 	return result;
 	}
 	
+	public List<BoardVo> findAll(int i, String kwd) {
+	      
+	      List<BoardVo> list = new ArrayList<>();
+	      
+	      Connection conn = null;
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	            
+	      try {
+	         conn = getConnection();
+	         
+	         String sql = "select "
+	               + "b.no, b.title, a.name, b.hit, date_format(b.reg_date, '%Y/%m/%d %H:%i:%s') as reg_date, "
+	               + "b.g_no, b.o_no, b.depth, b.user_no "
+	            + "from  user a, board b where a.no=b.user_no and b.title like'%"+kwd+"%' order by b.g_no desc, b.o_no limit ?, 5";
+	         pstmt = conn.prepareStatement(sql);
+	         
+	         pstmt.setInt(1, i);
+	         
+	         System.out.println(sql);
+	         
+	         rs = pstmt.executeQuery();
+	         
+	         while(rs.next()) {
+	            Long no = rs.getLong(1);
+	            String title = rs.getString(2);
+	            String name = rs.getString(3);
+	            int hit = rs.getInt(4);
+	            String reg_date = rs.getString(5);
+	            int g_no = rs.getInt(6);
+	            int o_no = rs.getInt(7);
+	            int depth = rs.getInt(8);
+	            Long user_no = rs.getLong(9);
+	            
+	            BoardVo vo = new BoardVo();
+	            vo.setNo(no);
+	            vo.setTitle(title);
+	            vo.setHit(hit);
+	            vo.setGroupNo(g_no);
+	            vo.setOrderNo(o_no);
+	            vo.setDepth(depth);
+	            vo.setRegDate(reg_date);
+	            vo.setUserNo(user_no);
+	            vo.setUserName(name);
+	            list.add(vo);
+	         }
+	         
+	      } catch (SQLException e) {
+	         System.out.println("error:" + e);
+	      } finally {
+	         try {
+	            if(rs != null) {
+	               rs.close();
+	            }
+	            if(pstmt != null) {
+	               pstmt.close();
+	            }
+	            if(conn != null) {
+	               conn.close();
+	            }
+	         } catch (SQLException e) {
+	            e.printStackTrace();
+	         }
+	      }
+	      
+	      return list;
+	   }
+	
 	public List<BoardVo> findAll() {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -200,6 +268,7 @@ public class BoardRepository {
 			pstmt = conn.prepareStatement(sql);
 
 			// 4. 바인딩
+			
 			pstmt.setString(1, title);
 			pstmt.setString(2, contents);
 			pstmt.setLong(3, userNo);
@@ -620,5 +689,47 @@ public class BoardRepository {
 		return no;
 	}
 
+	public int count(String kwd) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int no=0;
+
+		try {
+			conn = getConnection();
+
+			// 3. SQL 준비
+			String sql = "select count(*) from  board where title  like '%"+kwd+"%' order by g_no desc, o_no;";
+			pstmt = conn.prepareStatement(sql);
+
+			// 4. 바인딩
+
+			// 5. SQL 실행
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				no = rs.getInt(1);				
+			}
+
+		} catch (SQLException e) {
+			System.out.print("error : " + e.getMessage());
+		} finally {
+			// 자원정리
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return no;
+	}
 
 }

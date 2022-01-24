@@ -38,7 +38,6 @@ public class BoardService {
 	
 	//글 수정
 	public Boolean updateContents(BoardVo vo) {
-		System.out.println(vo);
 		return boardRepository.update(vo.getNo(), vo.getTitle(), vo.getContents());
 	}
 	
@@ -48,19 +47,58 @@ public class BoardService {
 	}
 	
 	//글 리스트(찾기 결과)
-	public Map<String,Object> getContentsList(int currentPage, String keyword) {
-		Map<String,Object> map = new HashMap<>();
-		List<BoardVo> list = boardRepository.findAll();
-		
-		
-		
-		
-		map.put("list",list);
-		map.put("totalCount", 0);
-		map.put("...", map);
-		
-		return map;
-	}
+	public Map<String, Object> getContentsList(Integer p, String kwd) {
+	      Map<String, Object> map = new HashMap<>();
+	      List<BoardVo> list = null;
+	      
+	      int cPage;  //인트로바꾼거
+	      int cnt = 0;
+	      int pcnt = 0;  //페이지총개수
+	      
+	      if (p == null) {
+	           cPage = 1;
+	       }else {
+	           cPage = p;
+	       }
+	      
+	      if(kwd == null ) {
+
+	         list =  boardRepository.findAll((cPage - 1) * 5);
+	         cnt = boardRepository.count();   //총개수
+	      }else {
+
+	         list =  boardRepository.findAll((cPage - 1) * 5 ,kwd);
+	         cnt = boardRepository.count(kwd);   //총개수
+	         
+	      }
+	      
+	   
+	      if(cnt % 5 == 0) {
+	         pcnt = cnt / 5;
+	      } else {
+	         pcnt  = (cnt / 5) + 1;
+	      }
+	      
+	      
+	      if(kwd == null || kwd.length()==0) {
+
+	      }else {
+
+	         if(cPage > pcnt) {
+	            cPage = 1;
+	         }
+	         
+	      }
+	      
+	      map.put("list", list);
+	      map.put("p", cPage);
+	      map.put("pcnt", pcnt);
+	      map.put("cnt", cnt);
+	      map.put("kwd", kwd);
+	      
+	      
+	      return map;
+	   }
 	
 	public Map<String,Object> getContentsList(int currentPage) {
 		Map<String,Object> map = new HashMap<>();
@@ -101,8 +139,5 @@ public class BoardService {
 		return list;
 	}*/
 	
-	private boolean increaseGroupOrderNo(BoardVo vo) {
-		return false;
-	}
 
 }

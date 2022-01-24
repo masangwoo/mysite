@@ -70,7 +70,9 @@ public class UserRepository {
 			// 3. SQL 준비
 			String sql = "insert into user values(null, ?,?,?,?, now())";
 			pstmt = conn.prepareStatement(sql);
-
+			
+			
+			System.out.println("sdfsdfsdfsdf" + vo.getName());
 			// 4. 바인딩
 			pstmt.setString(1, vo.getName());
 			pstmt.setString(2, vo.getEmail());
