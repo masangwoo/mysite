@@ -1,19 +1,42 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.poscoict</groupId>
-	<artifactId>mysite</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>pom</packaging>
-	
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.poscoict</groupId>
+    <artifactId>mysite</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>mysite03</artifactId>
+  <packaging>war</packaging>
+  
+  
 	<properties>
 		<project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
 		<project.reporting.outputEncodnig>utf-8</project.reporting.outputEncodnig>
+		<org.springframework-version>4.3.4.RELEASE</org.springframework-version>
 	</properties>
-	
+
 	<dependencies>
-	<!-- https://mvnrepository.com/artifact/javax.servlet/jstl -->
+		<!-- Spring Context -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		
+		<!-- Spring MVC -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		
+		<!-- Spring Web -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+
 		<dependency>
 		    <groupId>javax.servlet</groupId>
 		    <artifactId>jstl</artifactId>
@@ -34,8 +57,9 @@
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
+		<finalName>mysite03</finalName>
 		<sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
 		<resources>
 			<resource>
@@ -75,8 +99,4 @@
 		</plugins>
 	</build>
 	
-	<modules>
-		<module>mysite02</module>
-		<module>mysite03</module>
-	</modules>
 </project>
