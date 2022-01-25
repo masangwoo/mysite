@@ -41,13 +41,14 @@ public class BoardController {
 	
 	@RequestMapping("/writeform")
 	public String writeform(BoardVo vo,Model model) {
-		model.addAttribute(vo);
+		model.addAttribute("vo", vo);
 		return "/board/write";
 	}
 	
-	@RequestMapping(value="/writeform", method = RequestMethod.GET)
-	public String writeform(long no, Model model) {
-		BoardVo vo = boardService.getContents(no);
+	@RequestMapping(value="/replyform", method = RequestMethod.GET)
+	public String writeform(String no, Model model) {
+		BoardVo vo = boardService.getContents(Long.parseLong(no));
+		//System.out.println(vo);
 		model.addAttribute("vo",vo);
 		return "/board/write";
 	}

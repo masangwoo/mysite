@@ -41,7 +41,7 @@
 					<a href="${pageContext.servletContext.contextPath}/board">글목록</a>
 				<c:choose>
 					<c:when test="${!empty authUser.no}">
-						<a href="${pageContext.servletContext.contextPath}/board/writeform?no=${vo.no}">답글 달기</a>
+						<a href="${pageContext.servletContext.contextPath}/board/replyform?no=${vo.no}">답글 달기</a>
 					</c:when>
 				</c:choose>
 				<c:choose>

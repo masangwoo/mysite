@@ -45,7 +45,7 @@
                     
                        
                        
-                           <td style="padding-left:${(vo.depth-1)*20 }px">
+                           <td style="padding-left:${(vo.depth-1)*20 }px; text-align:left">
                               <c:if test='${vo.depth != 1}'>
                                  <img src="${pageContext.servletContext.contextPath }/assets/images/reply.png" />
                               </c:if>
@@ -56,7 +56,7 @@
                      <td>${vo.userName}</td>
                      <td>${vo.hit}</td>
                      <td>${vo.regDate}</td>
-                     <c:if test= '${authUser.no ==  vo.userNo && vo.status != "deleted"}'>
+                     <c:if test= '${authUser.no ==  vo.userNo}'>
                         <td><a href="${pageContext.request.contextPath}/board/delete?no=${vo.no}"  class="del" style='background-image: url("${pageContext.servletContext.contextPath }/assets/images/recycle.png")'>삭제</a></td>
                      </c:if >
                   </tr>

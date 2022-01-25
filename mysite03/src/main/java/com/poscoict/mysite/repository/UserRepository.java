@@ -27,8 +27,9 @@ public class UserRepository {
 
 	public UserVo findByEmailAndPassword(String email, String password){
 		Map<String, String> map = new HashMap<>();
-		map.put("e", email);
-		map.put("p", password);
+		map.put("email", email);
+		map.put("password", password);
+		System.out.println(map);
 		return sqlSession.selectOne("user.findByEmailAndPassword",map );
 	}
 	

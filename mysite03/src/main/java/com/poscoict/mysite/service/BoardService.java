@@ -18,9 +18,10 @@ public class BoardService {
 	
 	public boolean addContents(BoardVo vo) {
 		if(vo.getGroupNo() != null) {
-			return boardRepository.insert(vo);
+			System.out.println(vo);
+			return boardRepository.insert1(vo);
 		}else {
-			return boardRepository.insert(vo.getTitle(), vo.getContents(), vo.getUserNo());
+			return boardRepository.insert2(vo.getTitle(), vo.getContents(), vo.getUserNo());
 		}
 	
 	}
@@ -38,7 +39,7 @@ public class BoardService {
 	
 	//글 수정
 	public Boolean updateContents(BoardVo vo) {
-		return boardRepository.update(vo.getNo(), vo.getTitle(), vo.getContents());
+		return boardRepository.update1(vo.getNo(), vo.getTitle(), vo.getContents());
 	}
 	
 	//글 삭제
@@ -63,11 +64,11 @@ public class BoardService {
 	      
 	      if(kwd == null ) {
 
-	         list =  boardRepository.findAll((cPage - 1) * 5);
+	         list =  boardRepository.findAll(Long.valueOf((cPage - 1) * 5),null);
 	         cnt = boardRepository.count();   //총개수
 	      }else {
 
-	         list =  boardRepository.findAll((cPage - 1) * 5 ,kwd);
+	         list =  boardRepository.findAll(Long.valueOf((cPage - 1) * 5) ,kwd);
 	         cnt = boardRepository.count(kwd);   //총개수
 	         
 	      }
@@ -114,7 +115,7 @@ public class BoardService {
 	       }
 	      
 	      
-	      List<BoardVo> list =  boardRepository.findAll((cPage - 1) * 5);
+	      List<BoardVo> list =  boardRepository.findAll(Long.valueOf((cPage - 1) * 5),null);
 	      int cnt = boardRepository.count();   //총개수
 	      int pcnt = 0;  //페이지총개수
 	      if(cnt % 5 == 0) {
