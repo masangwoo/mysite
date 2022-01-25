@@ -8,12 +8,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.poscoict.mysite.vo.BoardVo;
 
 @Repository
 public class BoardRepository {
+	
+	@Autowired
+	private SqlSession sqlSession;
+	
 	public List<BoardVo> findAll(int i) {
 	Connection conn = null;
 	PreparedStatement pstmt = null;
@@ -214,7 +220,8 @@ public class BoardRepository {
 		return result;
 		}
 	
-	public int getTotal() {
+	public int getTotal(String keyword) {
+		//return sqlSession.selectOne("board.getToTalCount", "%"+keyword+"%");
 		int result = 0;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
