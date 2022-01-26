@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.poscoict.mysite.security.Auth;
 import com.poscoict.mysite.service.BoardService;
 import com.poscoict.mysite.vo.BoardVo;
 import com.poscoict.mysite.vo.UserVo;
@@ -48,12 +49,13 @@ public class BoardController {
 	@RequestMapping(value="/replyform", method = RequestMethod.GET)
 	public String writeform(String no, Model model) {
 		BoardVo vo = boardService.getContents(Long.parseLong(no));
-		//System.out.println(vo);
+
 		model.addAttribute("vo",vo);
 		return "/board/write";
 	}
 	
 	
+	@Auth
 	@RequestMapping(value="/write", method = RequestMethod.POST)
 	public String write(BoardVo vo) {
 		
