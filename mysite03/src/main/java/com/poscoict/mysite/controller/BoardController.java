@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.poscoict.mysite.security.Auth;
+import com.poscoict.mysite.security.AuthUser;
 import com.poscoict.mysite.service.BoardService;
 import com.poscoict.mysite.vo.BoardVo;
 import com.poscoict.mysite.vo.UserVo;
@@ -22,6 +23,7 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 	
+	@Auth
 	@RequestMapping("")
 	   public String index(HttpSession session, 
 				@RequestParam(value = "p", defaultValue = "1") Integer p,
@@ -55,7 +57,13 @@ public class BoardController {
 	}
 	
 	
-	@Auth
+	/*@Auth
+	@RequestMapping(value="/write", method = RequestMethod.POST)
+	public String write(@AuthUser UserVo authUser, BoardVo boardVo, @RequestParam(value="p", required=true)) {
+
+		return "redirect:/board";
+	}*/
+	
 	@RequestMapping(value="/write", method = RequestMethod.POST)
 	public String write(BoardVo vo) {
 		
