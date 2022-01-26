@@ -2,8 +2,6 @@ package com.poscoict.mysite.controller;
 
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.poscoict.mysite.security.Auth;
 import com.poscoict.mysite.security.AuthUser;
 import com.poscoict.mysite.service.BoardService;
 import com.poscoict.mysite.vo.BoardVo;
@@ -22,14 +19,14 @@ import com.poscoict.mysite.vo.UserVo;
 public class BoardController {
 	@Autowired
 	private BoardService boardService;
-	
-	@Auth
+
 	@RequestMapping("")
-	   public String index(HttpSession session, 
+	   public String index(
+			   @AuthUser UserVo authUser, BoardVo boardVo, 
 				@RequestParam(value = "p", defaultValue = "1") Integer p,
 				@RequestParam(value = "kwd", required = false, defaultValue = "") String kwd, Model model) {
 			Map<String, Object> map = null;
-			UserVo authUser = (UserVo) session.getAttribute("authUser");
+			
 			if (kwd.equals(null)) {
 				map = boardService.getContentsList(p);
 
@@ -56,17 +53,8 @@ public class BoardController {
 		return "/board/write";
 	}
 	
-	
-	/*@Auth
 	@RequestMapping(value="/write", method = RequestMethod.POST)
-	public String write(@AuthUser UserVo authUser, BoardVo boardVo, @RequestParam(value="p", required=true)) {
-
-		return "redirect:/board";
-	}*/
-	
-	@RequestMapping(value="/write", method = RequestMethod.POST)
-	public String write(BoardVo vo) {
-		
+	public String write(BoardVo vo) {	
 		boardService.addContents(vo);
 		return "redirect:/board";
 	}
@@ -96,13 +84,5 @@ public class BoardController {
 	public String update(BoardVo vo) {	
 		boardService.updateContents(vo);
 		return "redirect:/board";
-	}
-	
-/*	@RequestMapping(value="/replyform", method = RequestMethod.GET)
-	public String replyform(long no, Model model) {
-		BoardVo vo = boardService.getContents(no);
-		model.addAttribute("vo",vo);
-		return "/board/write";
-	}*/
-	
+	}	
 }
