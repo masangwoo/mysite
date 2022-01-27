@@ -27,6 +27,7 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 			<version>${org.springframework-version}</version>
+	
 			
 			<!-- JCL 제외 -->
 			<exclusions>
@@ -37,7 +38,13 @@
 			</exclusions>
 			
 		</dependency>
-		
+				
+			<!-- spring aspect -->
+		<dependency>
+		   	<groupId>org.springframework</groupId>
+		   	<artifactId>spring-aspects</artifactId>
+		   	<version>${org.springframework-version}</version>
+		</dependency>
 		<!-- Logback --> 
 		<dependency>                                    
 			<groupId>org.slf4j</groupId>                

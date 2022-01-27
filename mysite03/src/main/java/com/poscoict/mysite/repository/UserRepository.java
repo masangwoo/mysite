@@ -3,11 +3,12 @@ package com.poscoict.mysite.repository;
 import java.util.HashMap;
 import java.util.Map;
 
-
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StopWatch;
 
+import com.poscoict.mysite.exception.UserRepositoryException;
 import com.poscoict.mysite.vo.UserVo;
 
 @Repository
@@ -25,12 +26,13 @@ public class UserRepository {
 		return count==1;
 	}
 
-	public UserVo findByEmailAndPassword(String email, String password){
+	public UserVo findByEmailAndPassword(String email, String password) throws UserRepositoryException{
 		Map<String, String> map = new HashMap<>();
 		map.put("email", email);
 		map.put("password", password);
-		System.out.println(map);
+		
 		return sqlSession.selectOne("user.findByEmailAndPassword",map );
+
 	}
 	
 	public UserVo findByNo(Long userNo){
