@@ -40,19 +40,6 @@ public class GuestbookRepository {
 		
 	}
 	
-	private Connection getConnection() throws SQLException{
-		Connection conn =null;
-		try {
-			// 1. JDBC드라이버 로딩
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			// 2.연결하기
-			String url = "jdbc:mysql://localhost:3306/webdb?characterEncoding=UTF-8&serverTimezone=UTC";
-			conn = DriverManager.getConnection(url, "webdb", "webdb");
-		}catch (ClassNotFoundException e) {
-			System.out.print("드라이버 로딩 실패 : " + e.getMessage());
-		}
-		return conn;
-		}
-		
+	
 
 }
