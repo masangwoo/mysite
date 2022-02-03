@@ -1,9 +1,26 @@
 package com.poscoict.mysite.vo;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+
+
 public class UserVo {
 	private Long no;
+	
+	@NotEmpty
+	@Length(min=2,max=8)
 	private String name;
+	
+	
+	@NotEmpty
+	@Email
+	//@Pattern( regexp = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i", flags="")
 	private String email;
+	
+	@NotEmpty
+	@Length(min=4,max=16)
 	private String password;
 	private String gender;
 	private String JoinDate;

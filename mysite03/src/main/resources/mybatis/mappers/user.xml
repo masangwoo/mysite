@@ -12,7 +12,7 @@
 	</select>
 	
 	<insert id="insert" parameterType="uservo">
-		<![CDATA[ insert into user values(null, #{name},#{email},#{password},#{gender}, now())]]>
+		<![CDATA[ insert into user values(null, #{name},#{email},#{password},#{gender}, now(), 'USER')]]>
 	</insert>
 	
 	<update id="update" parameterType="uservo">
