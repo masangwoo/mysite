@@ -6,8 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.apache.catalina.Session;
-
 import com.poscoict.mysite.vo.UserVo;
 
 public class UserDao {
@@ -165,7 +163,6 @@ public class UserDao {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		Session session = null;
 
 		try {
 			conn = getConnection();
