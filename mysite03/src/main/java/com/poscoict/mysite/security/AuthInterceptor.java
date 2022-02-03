@@ -48,6 +48,13 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 			response.sendRedirect(request.getContextPath()+"/user/login");
 			return false;
 		}
+		if(auth.role().equals("ADMIN")) {
+			if(authUser.getRole().equals("ADMIN")) {
+				return true;
+			}
+			response.sendRedirect(request.getContextPath());
+			return false;
+		}
 		
 		//7.인증 확인!! -> controller의 handler(method) 실행
 		return true;
