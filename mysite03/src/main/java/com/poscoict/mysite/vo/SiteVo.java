@@ -4,6 +4,8 @@ public class SiteVo {
 	String title;
 	String welcome;
 	String profile;
+
+	String description;
 	public String getProfile() {
 		return profile;
 	}
@@ -11,7 +13,6 @@ public class SiteVo {
 		this.profile = profile;
 	}
 
-	String description;
 	
 	public String getTitle() {
 		return title;

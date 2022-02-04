@@ -19,7 +19,6 @@ public class SiteInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-
 		SiteVo vo = siteService.view();
 		servletContext.setAttribute("siteVo", vo);
 		return true;
