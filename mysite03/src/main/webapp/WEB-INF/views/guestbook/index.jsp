@@ -30,7 +30,6 @@
 						<tr>
 							<td colspan=4><textarea name="message" id="content"></textarea>
 							</td>
-							
 						</tr>
 						<tr>
 							<td colspan=4 align=right><input type="submit" VALUE=" 확인 "></td>
@@ -56,6 +55,7 @@
 		</tr>
 		<tr>
 			<td colspan=4>
+			
 			${fn:replace(item.message, newline, "<br/>") }
 		</td>
 		</tr>

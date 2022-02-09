@@ -20,15 +20,15 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 		viewResolver.setViewClass(JstlView.class);
 		viewResolver.setPrefix("/WEB-INF/views/");
 		viewResolver.setSuffix(".jsp");
-		return viewResolver();
+		return viewResolver;
 	}
 	//Message Converter
 
+	
+
+	// 서블릿 컨테이너(tomcat)의 DefaultServlet 위임(delegate) Handler -->	
 	@Override
 	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
 		configurer.enable();
 	}
-
-	// 서블릿 컨테이너(tomcat)의 DefaultServlet 위임(delegate) Handler -->	
-		
 	}
