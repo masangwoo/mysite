@@ -16,7 +16,7 @@ public class DBConfig {
 	@Autowired
 	private Environment env;
 	
-	//Connection Pool DataSource
+	// Connection Pool DataSource
 	@Bean
 	public DataSource dataSource() {
 		BasicDataSource dataSource = new BasicDataSource();
@@ -25,10 +25,9 @@ public class DBConfig {
 		dataSource.setUsername(env.getProperty("jdbc.username"));
 		dataSource.setPassword(env.getProperty("jdbc.password"));
 		
-		
 		dataSource.setInitialSize(env.getProperty("jdbc.initialSize", Integer.class));
-		dataSource.setMaxActive(env.getProperty("jdbc.maxActive", Integer.class));//아무리 많은 요청이 와도 100개 이상은 만들지 마라
+		dataSource.setMaxActive(env.getProperty("jdbc.maxActive", Integer.class));
 		
-		return dataSource();
+		return dataSource;
 	}
 }
