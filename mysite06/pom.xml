@@ -6,6 +6,7 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>mysite06</artifactId>
+  <packaging>war</packaging>
   
   	<properties>
 		<project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
@@ -109,12 +110,27 @@
 	</dependencies>
 	
 	<build>
-		<finalName>myweb</finalName>
+		<finalName>mysite06</finalName>
 		<plugins>
+		<!-- Uber JAR -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+		<!-- Tomcat WAR 배포 플러그인 -->
+			
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>tomcat-maven-plugin</artifactId>
+				<version>1.1</version>
+				<configuration>
+					<url>http://127.0.0.1:8080/manager/text</url>
+					<path>/mysite06</path>
+					<username>admin</username>
+					<password>manager</password>					
+				</configuration>
+			</plugin>	
+			
 		</plugins>
 	</build>
 	
