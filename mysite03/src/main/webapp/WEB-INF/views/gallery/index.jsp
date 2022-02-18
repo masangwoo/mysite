@@ -61,6 +61,7 @@ pageContext.setAttribute("newLine", "\n");
                <h1 id="gallery-title">갤러리</h1>
                <a href="" id="upload-image">이미지 올리기</a>
             </div>
+            <div id="gallery-body">
             <ul>
                <c:forEach var="item" items="${list}" varStatus="status">
                   <li><a href="${pageContext.request.contextPath }${item.url }"
@@ -75,6 +76,7 @@ pageContext.setAttribute("newLine", "\n");
                   </li>
                </c:forEach>
             </ul>
+            </div>
          </div>
 
          <div id="dialog-upload-form" title="이미지 업로드" style="display: none">

@@ -5,10 +5,17 @@
 #gallery {
 	margin: 20px auto;
 	width: 540px;
+	height: 100%;
+}
+
+#gallery #gallery-body {
+	width: 100%;
+	height: 100%;
 }
 
 #gallery ul {
 	width: 100%;
+	overflow: auto;
 }
 
 #gallery ul li {
@@ -26,16 +33,17 @@
 	position: absolute;
 	left:50%;
 	top:50%;
-	transform: translate(-50%, -50%);
+
 	background-position: 50%;
+	transform: translate(-50%, -50%);
 	background-size: cover;
-	    display: block;
+	display: block;
 	
 }
 
 #gallery ul li a.del-button {
-	width: 22px;
-	height: 22px;
+	width: 17px;
+	height: 17px;
 	position: absolute;
 	font-size: 0;
 	background-image: url('/mysite03/assets/images/delete-imge.png');
@@ -48,10 +56,14 @@
 
 #gallery ul li:hover {
 	border-color: red;
+	opacity: 1;
+	transition: .3s ease;
+  	transform: scale(1.1);
 }
 
 #gallery ul li:hover a.del-button {
 	display: block;
+	
 }
 
 #gallery-header {
