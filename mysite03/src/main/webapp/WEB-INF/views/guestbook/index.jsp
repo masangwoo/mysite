@@ -51,7 +51,7 @@
 			<td>${count-status.index}</td>
 			<td width=100>${item.name}</td>
 			<td>${item.reg_date}</td>
-			<td><a href="${pageContext.request.contextPath}/guestbook//deleteform?no=${item.no}">삭제</a></td>
+			<td><a href="${pageContext.request.contextPath}/guestbook/deleteform?no=${item.no}">삭제</a></td>
 		</tr>
 		<tr>
 			<td colspan=4>
