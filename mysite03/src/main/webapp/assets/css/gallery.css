@@ -12,17 +12,21 @@
 }
 
 #gallery ul li {
-	width: 135px;
-	height: 135px;
+	width: 115px;
+	height: 115px;
 	float: left;
 	position: relative;
+	border-style : ridge;
+	margin:4px; 
 }
 
 #gallery ul li a.image {
-	width: 125px;
-	height: 125px;
+	width: 110px;
+	height: 110px;
 	position: absolute;
-	margin: 0px auto;
+	left:50%;
+	top:50%;
+	transform: translate(-50%, -50%);
 	background-position: 50%;
 	background-size: cover;
 	    display: block;
@@ -36,10 +40,14 @@
 	font-size: 0;
 	background-image: url('/mysite03/assets/images/delete-imge.png');
 	background-size: cover;
-	right: 10px;
+	right: 2px;
 	top: 3px;
 	z-index: 50;
 	display: none;
+}
+
+#gallery ul li:hover {
+	border-color: red;
 }
 
 #gallery ul li:hover a.del-button {
