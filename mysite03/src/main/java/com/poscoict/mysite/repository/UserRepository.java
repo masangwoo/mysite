@@ -6,7 +6,6 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.StopWatch;
 
 import com.poscoict.mysite.exception.UserRepositoryException;
 import com.poscoict.mysite.vo.UserVo;
@@ -37,5 +36,9 @@ public class UserRepository {
 	
 	public UserVo findByNo(Long userNo){
 		return sqlSession.selectOne("user.findByNo", userNo);
+	}
+
+	public UserVo findByEmail(String email) {
+		return sqlSession.selectOne("user.findByEmail", email);
 	}
 }
