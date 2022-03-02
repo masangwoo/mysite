@@ -38,4 +38,8 @@ public class UserRepository {
 	public UserVo findByNo(Long userNo){
 		return sqlSession.selectOne("user.findByNo", userNo);
 	}
+	
+	public UserVo findByEmail(String email) {
+		return sqlSession.selectOne("user.findByEmail", email);
+	}
 }
